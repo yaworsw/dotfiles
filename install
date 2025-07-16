@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Get the absolute path of the current directory
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BIN_DIR="$DOTFILES_DIR/bin"
+
+# Check if the bin directory exists
+if [ ! -d "$BIN_DIR" ]; then
+    echo "Error: $BIN_DIR directory does not exist"
+    exit 1
+fi
+
+# Define the PATH addition
+PATH_ADDITION="export PATH=\"$BIN_DIR:\$PATH\""
+
+# Check if the PATH addition already exists in .zshrc
+if grep -q "$BIN_DIR" ~/.zshrc; then
+    echo "PATH addition for $BIN_DIR already exists in ~/.zshrc"
+else
+    # Add the PATH addition to .zshrc
+    echo "" >> ~/.zshrc
+    echo "# Added by dotfiles install script" >> ~/.zshrc
+    echo "$PATH_ADDITION" >> ~/.zshrc
+    echo "Added $BIN_DIR to PATH in ~/.zshrc"
+fi
+
+echo "Installation complete! Please restart your terminal or run 'source ~/.zshrc' to apply changes."
