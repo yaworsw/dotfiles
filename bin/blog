@@ -1,0 +1,11 @@
+okay, blog is an executible that is used to interface with my blog. when you run it it asks you to select what to open the blog with.  the options are 
+
+1 Last Used 
+2 gemini CLI
+3 cursor
+4 obsidian
+
+the user can press a corresponding number- or jsut hit enter (to select last used) or can use the arrow keys to select an option or press the corresponding letter- so like g = gemini, c = cursor, o = obsiidial, l = last used
+
+we will store information about the commands used in this project in a file ~/.alter-ego/blog.tmal
+

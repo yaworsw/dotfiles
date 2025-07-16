@@ -1,0 +1,22 @@
+{
+  "name": "dotfiles-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for dotfiles",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "vitest",
+    "lint": "eslint . --ext .ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^1.6.0",
+    "eslint": "^9.5.0",
+    "typescript": "^5.4.5",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@types/node": "^20.0.0"
+  }
+}
