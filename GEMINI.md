@@ -9,6 +9,7 @@ Before writing any code, Gemini must thoroughly understand the context of the re
 - **Analyze the Request:** Carefully review the user's prompt to fully understand the requirements, goals, and constraints.
 - **Investigate the Codebase:** Use tools like `glob`, `read_file`, and `search_file_content` to locate relevant files, understand existing patterns, conventions, and the overall architecture.
 - **Ask Clarifying Questions:** If the request is ambiguous or if there are multiple ways to proceed, ask the user for clarification to avoid incorrect assumptions.
+- **Pre-Plan Check:** Before moving from Explore to Plan, it must confirm that it does not have any more questions that it could ask about the requirements and also list each question that it would have asked along with the question's answer and how it knows the answer.
 
 ## 2. Plan
 
@@ -16,7 +17,8 @@ Based on the findings from the Explore phase, create a clear and concise plan of
 
 - **Step-by-Step Outline:** Break down the required changes into a logical sequence of steps.
 - **Tool Selection:** Identify the specific tools that will be used for each step (e.g., `replace`, `write_file`, `run_shell_command`).
-- **Propose the Plan:** For any non-trivial change, present the plan to the user for review and approval before proceeding.
+- **Propose the Plan:** For any non-trivial change, present the plan to the user for review and approval before proceeding. The plan should include a list of files that will be edited and a little bit about what changes will be made. The plan should also include the unit tests if the AI is implementing any for this project. The AI must also pause and confirm at the end of the planning phase and ask the user for feedback.
+- **Create a Plan File:** Create a markdown file in the `plans` directory for the feature. This file will serve as a record of the plan and can be used to restart the process if needed.
 
 ## 3. Code
 

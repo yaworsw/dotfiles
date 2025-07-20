@@ -1,25 +1,15 @@
-import * as fs from 'fs';
+
 import * as path from 'path';
 import * as os from 'os';
+import { ConfigFile } from './configFile';
 
-export class Config {
-    private readonly configDir = path.join(os.homedir(), '.alter-ego');
+interface ConfigData {
+    theme: string;
+    language: string;
+}
 
+export class Config extends ConfigFile<ConfigData> {
     constructor() {
-        this.configDir = path.join(os.homedir(), '.alter-ego');
+        super(path.join(os.homedir(), '.alter-ego', 'config.json'));
     }
-
-    getConfigFile(): string {
-        return path.join(this.configDir, 'config.json');
-    }
-
-    getConfig(): Config {
-        const configFile = this.getConfigFile();
-        if (!fs.existsSync(configFile)) {
-            return new Config();
-        }
-        const config = fs.readFileSync(configFile, 'utf8');
-        return JSON.parse(config);
-    }
-    
 }
