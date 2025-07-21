@@ -1,3 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env bash
 
-import './src/blog/index';
+cd "$(dirname "$0")/.."
+npx ts-node src/blog/index.ts
