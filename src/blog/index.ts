@@ -4,6 +4,7 @@ import * as child_process from 'child_process';
 import * as readline from 'readline';
 import * as fs from 'fs';
 import * as path from 'path';
+import inquirer from 'inquirer';
 
 /* eslint-disable no-console */
 
@@ -103,27 +104,15 @@ function getBlogDir(): string {
 }
 
 async function selectOption(): Promise<string> {
-  return new Promise((resolve) => {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    console.log('Select an option:');
-    options.forEach((option, index) => {
-      console.log(`${index + 1}. ${option.name}`);
-    });
-
-    rl.question('> ', (answer: string) => {
-      rl.close();
-      const index = parseInt(answer, 10) - 1;
-      if (options[index]) {
-        resolve(options[index].value);
-      } else {
-        resolve('last-used');
-      }
-    });
-  });
+  const { selection } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'selection',
+      message: 'Select an option:',
+      choices: options,
+    },
+  ]);
+  return selection;
 }
 
 async function main() {

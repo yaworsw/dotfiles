@@ -130,4 +130,5 @@ Verify changes work as expected:
 - **Always run tests** after making changes
 - **Ask for clarification** if requirements are unclear
 - **Follow existing patterns** in the codebase
+- **Configuration Files**: Never edit `.eslintrc.js` or `tsconfig.json` files without explicit user confirmation
 
