@@ -9,13 +9,13 @@ interface BlogConfigData {
 }
 
 export class BlogConfig extends ConfigFile<BlogConfigData> {
-    constructor() {
-        super(path.join(os.homedir(), '.config', 'blog', 'config.json'));
-    }
+  constructor() {
+    super(path.join(os.homedir(), '.config', 'blog', 'config.json'));
+  }
 
-    getDefaultData(): BlogConfigData {
-        return {
-            lastUsed: 'gemini'
-        };
-    }
+  getDefaultData(): BlogConfigData {
+    return {
+      lastUsed: 'gemini',
+    };
+  }
 }

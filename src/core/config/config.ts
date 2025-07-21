@@ -9,7 +9,7 @@ interface ConfigData {
 }
 
 export class Config extends ConfigFile<ConfigData> {
-    constructor() {
-        super(path.join(os.homedir(), '.alter-ego', 'config.json'));
-    }
+  constructor() {
+    super(path.join(os.homedir(), '.alter-ego', 'config.json'));
+  }
 }
