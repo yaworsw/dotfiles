@@ -1,0 +1,133 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Process - Explore, Plan, Code, Test Workflow
+
+This project follows a structured 4-phase development workflow to ensure high-quality, predictable development.
+
+## Phase 1: Explore
+
+Before writing any code, you MUST thoroughly understand the context and codebase:
+
+1. **Analyze the Request**: Carefully review the user's prompt to understand requirements, goals, and constraints
+2. **Investigate the Codebase**: 
+   - Use semantic search to find relevant files and patterns
+   - Examine existing code structure in `src/` directory
+   - Understand the project's architecture and conventions
+   - Check for existing similar functionality
+3. **Ask Clarifying Questions**: If the request is ambiguous or has multiple interpretations, ask for clarification
+4. **Pre-Plan Check**: Before moving to Plan phase, confirm you have no more questions and list:
+   - Each question you would have asked
+   - The answer to each question
+   - How you know the answer
+
+## Phase 2: Plan
+
+Create a clear, step-by-step plan:
+
+1. **Step-by-Step Outline**: Break down changes into logical sequence
+2. **Tool Selection**: Identify specific tools for each step
+3. **Propose the Plan**: For non-trivial changes:
+   - List files that will be edited
+   - Describe what changes will be made
+   - Include unit tests if implementing any
+   - Pause and ask for user feedback before proceeding
+
+## Phase 3: Code
+
+Execute changes following the approved plan:
+
+1. **Implement Changes**: Use appropriate tools to modify code
+2. **Adhere to Conventions**: Follow existing coding style, formatting, and patterns
+3. **Commit Incrementally**: Apply changes in small, logical increments for larger tasks
+
+## Phase 4: Test
+
+Verify changes work as expected:
+
+1. **Run Existing Tests**: Execute `npm test` to ensure no regressions
+2. **Write New Tests**: Add unit tests using vitest for new functionality
+3. **Static Analysis**: Run `npm run lint` for code quality
+4. **Final Verification**: Confirm changes satisfy the original request
+
+## Project Conventions
+
+### Testing
+- **Framework**: Use vitest for unit testing
+- **File Naming**: Test files co-located with source files as `[filename].test.ts`
+- **Coverage**: Write tests for all new functionality
+
+### Code Quality
+- **Linting**: Use ESLint with TypeScript rules
+- **Formatting**: Follow existing code style and indentation
+- **TypeScript**: Use strict typing, avoid `any` types
+
+### File Structure
+- **Source Code**: Place in `src/` directory
+- **Tests**: Co-locate with source files
+
+### NPM Scripts
+- `npm test`: Run unit tests with vitest
+- `npm run lint`: Lint codebase with ESLint
+
+## Code Style Guidelines
+
+### TypeScript
+- Use strict TypeScript configuration
+- Prefer interfaces over types for object shapes
+- Use meaningful variable and function names
+- Add JSDoc comments for public APIs
+
+### Error Handling
+- Use try-catch blocks for async operations
+- Provide meaningful error messages
+- Handle edge cases gracefully
+
+### Async/Await
+- Prefer async/await over Promises
+- Handle errors properly in async functions
+- Use Promise.all() for concurrent operations
+
+## Common Patterns
+
+### File Operations
+- Use Node.js fs/promises for file operations
+- Handle file not found scenarios
+- Validate file paths before operations
+
+### CLI Interactions
+- Use inquirer for user prompts
+- Provide clear help text
+- Handle user cancellation gracefully
+
+### Configuration
+- Use environment variables for sensitive data
+- Provide sensible defaults
+- Validate configuration on startup
+
+## Quality Assurance
+
+### Before Submitting
+1. Run `npm run lint` to check code quality
+2. Run `npm test` to ensure all tests pass
+3. Run `npm run build` to verify TypeScript compilation
+4. Verify the implementation matches the original requirements
+
+### Code Review Checklist
+- [ ] Code follows project conventions
+- [ ] All new functionality has tests
+- [ ] No linting errors
+- [ ] TypeScript compilation succeeds
+- [ ] Error handling is appropriate
+- [ ] Documentation is updated if needed
+
+## Important Notes
+
+- **Always follow the 4-phase workflow**: Explore → Plan → Code → Test
+- **Never skip the Plan phase** for non-trivial changes
+- **Always run tests** after making changes
+- **Ask for clarification** if requirements are unclear
+- **Follow existing patterns** in the codebase
+

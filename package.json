@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "vitest",
-    "lint": "eslint . --ext .ts",
-    "build": "tsc"
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
