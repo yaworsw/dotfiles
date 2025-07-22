@@ -22,6 +22,11 @@ Before writing any code, you MUST thoroughly understand the context and codebase
    - Each question you would have asked
    - The answer to each question
    - How you know the answer
+5. **MANDATORY CONFIRMATION**: You MUST get explicit user confirmation before proceeding to Plan phase:
+   - If you asked questions and got answers: Confirm with user that you can proceed
+   - If you made assumptions without explicit user answers: You MUST ask for confirmation that your assumptions are correct
+   - If you have any uncertainty: You MUST resolve it with the user before proceeding
+   - **NEVER proceed to Plan phase without explicit user approval**
 
 ## Phase 2: Plan
 
@@ -33,7 +38,8 @@ Create a clear, step-by-step plan:
    - List files that will be edited
    - Describe what changes will be made
    - Include unit tests if implementing any
-   - Pause and ask for user feedback before proceeding
+   - **MANDATORY USER APPROVAL**: You MUST ask "Can I proceed with this plan?" and wait for explicit user confirmation before moving to Code phase
+4. **Plan Approval Required**: You CANNOT start coding until the user explicitly approves the plan
 
 ## Phase 3: Code
 
@@ -130,5 +136,9 @@ Verify changes work as expected:
 - **Always run tests** after making changes
 - **Ask for clarification** if requirements are unclear
 - **Follow existing patterns** in the codebase
+- **Configuration Files**: Never edit `.eslintrc.js` or `tsconfig.json` files without explicit user confirmation
+- **MANDATORY USER APPROVAL**: You MUST get explicit user confirmation before proceeding from Explore to Plan phase
+- **MANDATORY PLAN APPROVAL**: You MUST get explicit user confirmation before proceeding from Plan to Code phase
+- **NO ASSUMPTIONS**: If you made any assumptions without explicit user answers, you MUST get confirmation that your assumptions are correct before proceeding
 - **Configuration Files**: Never edit `.eslintrc.js` or `tsconfig.json` files without explicit user confirmation
 
