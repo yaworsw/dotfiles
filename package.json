@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "vitest",
+    "test-run": "vitest run",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix"
   },

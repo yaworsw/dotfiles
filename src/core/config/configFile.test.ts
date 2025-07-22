@@ -5,13 +5,20 @@ import { ConfigFile } from './configFile';
 
 vi.mock('fs');
 
+// Create a concrete implementation for testing
+class TestConfigFile extends ConfigFile<{ test: string }> {
+  getDefaultData(): { test: string } {
+    return { test: 'default' };
+  }
+}
+
 describe('ConfigFile', () => {
   const mockFilePath = '/mock/config.json';
-  let configFile: ConfigFile<{ test: string }>;
+  let configFile: TestConfigFile;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    configFile = new ConfigFile(mockFilePath);
+    configFile = new TestConfigFile(mockFilePath);
   });
 
   afterEach(() => {
@@ -52,6 +59,37 @@ describe('ConfigFile', () => {
       configFile.write(mockData);
       expect(fs.mkdirSync).toHaveBeenCalledWith(path.dirname(mockFilePath), { recursive: true });
       expect(fs.writeFileSync).toHaveBeenCalledWith(mockFilePath, JSON.stringify(mockData, null, 2));
+    });
+  });
+
+  describe('loadOrCreate', () => {
+    it('should return existing data if file exists', () => {
+      const mockData = { test: 'existing' };
+      vi.mocked(fs.existsSync).mockReturnValue(true);
+      vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify(mockData));
+
+      const result = configFile.loadOrCreate();
+
+      expect(result).toEqual(mockData);
+      expect(fs.writeFileSync).not.toHaveBeenCalled();
+    });
+
+    it('should create file with default data if file does not exist', () => {
+      vi.mocked(fs.existsSync).mockReturnValue(false);
+
+      const result = configFile.loadOrCreate();
+
+      expect(result).toEqual({ test: 'default' });
+      expect(fs.mkdirSync).toHaveBeenCalledWith(path.dirname(mockFilePath), { recursive: true });
+      expect(fs.writeFileSync).toHaveBeenCalledWith(mockFilePath, JSON.stringify({ test: 'default' }, null, 2));
+    });
+
+    it('should return default data after creating file', () => {
+      vi.mocked(fs.existsSync).mockReturnValue(false);
+
+      const result = configFile.loadOrCreate();
+
+      expect(result).toEqual({ test: 'default' });
     });
   });
 });

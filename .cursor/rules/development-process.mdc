@@ -117,8 +117,7 @@ Verify changes work as expected:
 
 ### Before Submitting
 1. Run `npm run lint` to check code quality
-2. Run `npm test` to ensure all tests pass
-3. Run `npm run build` to verify TypeScript compilation
+2. Run `npm test-run` to ensure all tests pass
 4. Verify the implementation matches the original requirements
 
 ### Code Review Checklist

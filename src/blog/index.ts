@@ -1,5 +1,6 @@
 
 import { BlogConfig } from './blogConfig';
+import { Config } from '../core/config/config';
 import * as child_process from 'child_process';
 import * as readline from 'readline';
 import * as fs from 'fs';
@@ -9,13 +10,26 @@ import inquirer from 'inquirer';
 /* eslint-disable no-console */
 
 const config = new BlogConfig();
+const coreConfig = new Config();
 
-const options = [
-  { name: 'Last Used', value: 'last-used' },
-  { name: 'Gemini CLI', value: 'gemini' },
-  { name: 'Cursor', value: 'cursor' },
-  { name: 'Obsidian', value: 'obsidian' },
-];
+function getOptions(configData: { lastUsed?: string }): Array<{ name: string; value: string }> {
+  const coreConfigData = coreConfig.loadOrCreate();
+  const applications = coreConfigData.applications ?? [];
+  const lastUsed = configData.lastUsed ?? 'gemini';
+  const lastUsedApp = applications.find(app => app.id === lastUsed);
+  const lastUsedDisplay = lastUsedApp ? lastUsedApp.name : 'Gemini CLI';
+
+  const options = [
+    { name: `Last Used (${lastUsedDisplay})`, value: 'last-used' },
+  ];
+
+  // Add all configured applications
+  applications.forEach(app => {
+    options.push({ name: app.name, value: app.id });
+  });
+
+  return options;
+}
 
 async function promptForBlogDirectory(): Promise<string> {
   return new Promise((resolve) => {
@@ -96,14 +110,15 @@ async function runSetupGuide(): Promise<void> {
 }
 
 function getBlogDir(): string {
-  const configData = config.read();
+  const configData = config.loadOrCreate();
   if (!configData?.blogDir) {
     throw new Error('Blog directory not configured. Please run the setup guide.');
   }
   return configData.blogDir;
 }
 
-async function selectOption(): Promise<string> {
+async function selectOption(configData: { lastUsed?: string }): Promise<string> {
+  const options = getOptions(configData);
   const { selection } = await inquirer.prompt([
     {
       type: 'list',
@@ -118,38 +133,42 @@ async function selectOption(): Promise<string> {
 async function main() {
   try {
     // Check if config exists and has blog directory
-    const configData = config.read();
+    const configData = config.loadOrCreate();
     if (!configData?.blogDir) {
       console.log('⚠️  Blog configuration not found or incomplete.');
       await runSetupGuide();
       return;
     }
 
-    const lastUsed = configData.lastUsed;
-    let selection = await selectOption();
+    const lastUsed = configData.lastUsed ?? 'gemini';
+    let selection = await selectOption(configData);
 
     if (selection === 'last-used') {
-      selection = lastUsed ?? 'gemini';
+      selection = lastUsed;
     }
 
     config.write({ ...configData, lastUsed: selection });
 
     const blogDir = getBlogDir();
 
-    switch (selection) {
-    case 'gemini':
+    // Get the selected application
+    const applications = coreConfig.loadOrCreate().applications ?? [];
+    const selectedApp = applications.find(app => app.id === selection);
+
+    if (!selectedApp) {
+      console.error('❌ Selected application not found in configuration.');
+      process.exit(1);
+    }
+
+    console.log(`Opening ${selectedApp.name} with blog directory: ${blogDir}`);
+
+    if (selection === 'gemini') {
+      // We can't open a new terminal from here, so we'll just print a message
       console.log('Opening Gemini CLI...');
       console.log(`Blog directory: ${blogDir}`);
-      // We can't open a new terminal from here, so we'll just print a message
-      break;
-    case 'cursor':
-      console.log(`Opening Cursor with blog directory: ${blogDir}`);
-      child_process.exec(`cursor "${blogDir}"`);
-      break;
-    case 'obsidian':
-      console.log(`Opening Obsidian with blog directory: ${blogDir}`);
-      child_process.exec(`obsidian "${blogDir}"`);
-      break;
+    } else {
+      // Execute the command for other applications
+      child_process.exec(`${selectedApp.exec} "${blogDir}"`);
     }
   } catch (error) {
     console.error('❌ Error:', error instanceof Error ? error.message : error);
