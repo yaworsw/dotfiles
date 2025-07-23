@@ -1,0 +1,325 @@
+---
+alwaysApply: true
+---
+
+# Dotfiles Repository Structure Documentation
+
+This repository contains a collection of dotfiles and utility scripts for managing personal development environment configuration. The project is written in TypeScript and provides both CLI tools and web interfaces for configuration management.
+
+## Repository Overview
+
+This is a **dotfiles repository** that provides:
+- CLI tools for various development tasks
+- Web-based configuration interface
+- Core configuration management system
+- Integration with external development tools
+
+## Project Structure
+
+### Root Level Files
+- `package.json` - Node.js project configuration with TypeScript, testing, and linting
+- `tsconfig.json` - TypeScript configuration
+- `.eslintrc.js` - ESLint configuration for TypeScript
+- `install` - Bash script that adds the `bin/` directory to PATH in `.zshrc`
+- `README.md` - Project description
+- `.nvmrc` - Node.js version specification
+
+### `/bin` Directory - CLI Executables
+Contains shell scripts that serve as entry points for the TypeScript applications:
+- Each script executes a corresponding TypeScript application in `/src`
+- Scripts are designed to be added to PATH for global access
+- Uses `ts-node` to run TypeScript files directly
+
+### `/src` Directory - TypeScript Source Code
+
+#### `/src/core` - Core Configuration System
+- Contains reusable configuration management utilities
+- Base classes for file-based configuration
+- Type-safe configuration with TypeScript interfaces
+- Default value fallbacks and error handling
+
+#### `/src/[tool-name]` - Individual Tool Modules
+Each tool has its own directory with:
+- `index.ts` - Main entry point for the tool
+- Tool-specific configuration files
+- Related utilities and components
+
+### `/config` Directory - Configuration Files
+- Contains JSON configuration files for various tools
+- Organized in subdirectories by tool/feature
+- Used by the core configuration system
+
+## Development Tools & Patterns
+
+### Technology Stack
+- **TypeScript** - Primary language with strict typing
+- **Node.js** - Runtime environment
+- **Express.js** - Web server framework (when web interfaces are needed)
+- **React** - Frontend framework (for web interfaces)
+- **Vitest** - Testing framework
+- **ESLint** - Code linting and formatting
+
+### Configuration Pattern
+- JSON-based configuration files
+- Type-safe configuration with TypeScript interfaces
+- Base `ConfigFile` class for file-based configuration
+- Default value fallbacks
+- Error handling for file operations
+
+### CLI Pattern
+- Interactive prompts using Inquirer.js
+- Command-line argument parsing
+- User-friendly error messages
+- Configuration persistence
+- Executable scripts in `/bin` directory
+
+### Web Server Pattern
+- Express.js with middleware setup
+- CORS enabled for development
+- Static file serving
+- RESTful API design
+- React frontend components
+
+### Testing Pattern
+- Vitest for unit testing
+- Test files co-located with source files (`.test.ts` suffix)
+- Comprehensive test coverage for configuration and utilities
+
+## File Organization Conventions
+
+### Directory Structure
+- `/src` - All TypeScript source code
+- `/bin` - Executable shell scripts
+- `/config` - Configuration files
+- `/public` - Static assets (for web interfaces)
+- `/routes` - API route definitions (for web servers)
+- `/client` - Frontend components (for web interfaces)
+
+### File Naming
+- TypeScript files: `.ts` extension
+- Test files: `.test.ts` suffix
+- Configuration files: `.json` extension
+- Executable scripts: no extension in `/bin`
+- React components: `.tsx` extension
+
+### Module Organization
+- Each tool/feature has its own directory under `/src`
+- Core utilities are in `/src/core`
+- Entry points are typically `index.ts` files
+- Configuration classes extend base configuration utilities
+
+## Development Workflow
+
+### Setup
+1. Run `./install` to add bin directory to PATH
+2. Install dependencies with `npm install`
+3. Use `npm test` for testing
+4. Use `npm run lint` for code quality checks
+
+### Available Commands
+- Tools are accessible via PATH after running `./install`
+- Each tool in `/bin` corresponds to a TypeScript application
+- Web servers typically run on configurable ports
+
+### Code Quality
+- ESLint with TypeScript rules
+- TypeScript strict mode enabled
+- Consistent code formatting
+- Comprehensive error handling
+
+## Configuration Management
+
+### Storage
+- Configuration files stored in user's home directory
+- JSON-based configuration format
+- Hierarchical configuration structure
+- Environment-specific configurations
+
+### Patterns
+- Type-safe configuration with interfaces
+- Default value fallbacks
+- Configuration validation
+- Recursive configuration discovery
+
+## Integration Patterns
+
+### External Tools
+- Integration with development tools and editors
+- Command-line tool wrappers
+- Application launchers
+- Configuration synchronization
+
+### File System
+- Cross-platform path handling
+- File and directory operations
+- Configuration file management
+- Static asset serving
+
+## Important Notes
+
+- Configuration is stored in user's home directory
+- All TypeScript code is in `/src` directory
+- CLI tools are accessible via PATH after running `./install`
+- Web servers use configurable ports
+- Tools integrate with external development applications
+- Modular architecture allows easy addition of new tools# Dotfiles Repository Structure Documentation
+
+This repository contains a collection of dotfiles and utility scripts for managing personal development environment configuration. The project is written in TypeScript and provides both CLI tools and web interfaces for configuration management.
+
+## Repository Overview
+
+This is a **dotfiles repository** that provides:
+- CLI tools for various development tasks
+- Web-based configuration interface
+- Core configuration management system
+- Integration with external development tools
+
+## Project Structure
+
+### Root Level Files
+- `package.json` - Node.js project configuration with TypeScript, testing, and linting
+- `tsconfig.json` - TypeScript configuration
+- `.eslintrc.js` - ESLint configuration for TypeScript
+- `install` - Bash script that adds the `bin/` directory to PATH in `.zshrc`
+- `README.md` - Project description
+- `.nvmrc` - Node.js version specification
+
+### `/bin` Directory - CLI Executables
+Contains shell scripts that serve as entry points for the TypeScript applications:
+- Each script executes a corresponding TypeScript application in `/src`
+- Scripts are designed to be added to PATH for global access
+- Uses `ts-node` to run TypeScript files directly
+
+### `/src` Directory - TypeScript Source Code
+
+#### `/src/core` - Core Configuration System
+- Contains reusable configuration management utilities
+- Base classes for file-based configuration
+- Type-safe configuration with TypeScript interfaces
+- Default value fallbacks and error handling
+
+#### `/src/[tool-name]` - Individual Tool Modules
+Each tool has its own directory with:
+- `index.ts` - Main entry point for the tool
+- Tool-specific configuration files
+- Related utilities and components
+
+### `/config` Directory - Configuration Files
+- Contains JSON configuration files for various tools
+- Organized in subdirectories by tool/feature
+- Used by the core configuration system
+
+## Development Tools & Patterns
+
+### Technology Stack
+- **TypeScript** - Primary language with strict typing
+- **Node.js** - Runtime environment
+- **Express.js** - Web server framework (when web interfaces are needed)
+- **React** - Frontend framework (for web interfaces)
+- **Vitest** - Testing framework
+- **ESLint** - Code linting and formatting
+
+### Configuration Pattern
+- JSON-based configuration files
+- Type-safe configuration with TypeScript interfaces
+- Base `ConfigFile` class for file-based configuration
+- Default value fallbacks
+- Error handling for file operations
+
+### CLI Pattern
+- Interactive prompts using Inquirer.js
+- Command-line argument parsing
+- User-friendly error messages
+- Configuration persistence
+- Executable scripts in `/bin` directory
+
+### Web Server Pattern
+- Express.js with middleware setup
+- CORS enabled for development
+- Static file serving
+- RESTful API design
+- React frontend components
+
+### Testing Pattern
+- Vitest for unit testing
+- Test files co-located with source files (`.test.ts` suffix)
+- Comprehensive test coverage for configuration and utilities
+
+## File Organization Conventions
+
+### Directory Structure
+- `/src` - All TypeScript source code
+- `/bin` - Executable shell scripts
+- `/config` - Configuration files
+- `/public` - Static assets (for web interfaces)
+- `/routes` - API route definitions (for web servers)
+- `/client` - Frontend components (for web interfaces)
+
+### File Naming
+- TypeScript files: `.ts` extension
+- Test files: `.test.ts` suffix
+- Configuration files: `.json` extension
+- Executable scripts: no extension in `/bin`
+- React components: `.tsx` extension
+
+### Module Organization
+- Each tool/feature has its own directory under `/src`
+- Core utilities are in `/src/core`
+- Entry points are typically `index.ts` files
+- Configuration classes extend base configuration utilities
+
+## Development Workflow
+
+### Setup
+1. Run `./install` to add bin directory to PATH
+2. Install dependencies with `npm install`
+3. Use `npm test` for testing
+4. Use `npm run lint` for code quality checks
+
+### Available Commands
+- Tools are accessible via PATH after running `./install`
+- Each tool in `/bin` corresponds to a TypeScript application
+- Web servers typically run on configurable ports
+
+### Code Quality
+- ESLint with TypeScript rules
+- TypeScript strict mode enabled
+- Consistent code formatting
+- Comprehensive error handling
+
+## Configuration Management
+
+### Storage
+- Configuration files stored in user's home directory
+- JSON-based configuration format
+- Hierarchical configuration structure
+- Environment-specific configurations
+
+### Patterns
+- Type-safe configuration with interfaces
+- Default value fallbacks
+- Configuration validation
+- Recursive configuration discovery
+
+## Integration Patterns
+
+### External Tools
+- Integration with development tools and editors
+- Command-line tool wrappers
+- Application launchers
+- Configuration synchronization
+
+### File System
+- Cross-platform path handling
+- File and directory operations
+- Configuration file management
+- Static asset serving
+
+## Important Notes
+
+- Configuration is stored in user's home directory
+- All TypeScript code is in `/src` directory
+- CLI tools are accessible via PATH after running `./install`
+- Web servers use configurable ports
+- Tools integrate with external development applications
+- Modular architecture allows easy addition of new tools
