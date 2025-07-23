@@ -4,6 +4,13 @@
     "module": "Node16",
     "rootDir": "./src",
     "strict": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "lib": ["es2022", "dom"],
+    "moduleResolution": "Node16",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
