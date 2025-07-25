@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")/.."
-npx ts-node src/blog/index.ts
+npx tsx src/blog/cli.tsx

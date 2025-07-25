@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2022",
-    "module": "Node16",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "lib": ["es2022", "dom"],
-    "moduleResolution": "Node16",
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "target": "esnext", 
+        "module": "esnext",
+    "moduleResolution": "node", 
+    "esModuleInterop": true, 
+    "outDir": "./dist", 
+    "forceConsistentCasingInFileNames": true, 
+    "skipLibCheck": true, 
+    "jsx": "react-jsx" 
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx" 
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

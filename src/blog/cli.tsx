@@ -5,27 +5,28 @@ import * as child_process from 'child_process';
 import * as readline from 'readline';
 import * as fs from 'fs';
 import * as path from 'path';
-import inquirer from 'inquirer';
+
 
 /* eslint-disable no-console */
 
 const config = new BlogConfig();
 const coreConfig = new Config();
 
-function getOptions(configData: { lastUsed?: string }): Array<{ name: string; value: string }> {
+function getOptions(configData: { lastUsed?: string }): Array<{ label: string; value: string }> {
   const coreConfigData = coreConfig.loadOrCreate();
   const applications = coreConfigData.applications ?? [];
   const lastUsed = configData.lastUsed ?? 'gemini';
   const lastUsedApp = applications.find(app => app.id === lastUsed);
   const lastUsedDisplay = lastUsedApp ? lastUsedApp.name : 'Gemini CLI';
 
+
   const options = [
-    { name: `Last Used (${lastUsedDisplay})`, value: 'last-used' },
+    { label: `Last Used (${lastUsedDisplay})`, value: 'last-used' },
   ];
 
   // Add all configured applications
   applications.forEach(app => {
-    options.push({ name: app.name, value: app.id });
+    options.push({ label: app.name, value: app.id });
   });
 
   return options;
@@ -119,15 +120,32 @@ function getBlogDir(): string {
 
 async function selectOption(configData: { lastUsed?: string }): Promise<string> {
   const options = getOptions(configData);
-  const { selection } = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'selection',
-      message: 'Select an option:',
-      choices: options,
-    },
-  ]);
-  return selection;
+
+  return new Promise(async (resolve) => {
+    // @ts-ignore - Dynamic imports to avoid TypeScript module resolution issues
+    const { render } = await import('ink');
+    // @ts-ignore
+    const { Select } = await import('@inkjs/ui');
+    // @ts-ignore
+    const React = await import('react');
+
+    const AppSelector = ({ onSelect }: { onSelect: (value: string) => void }) => {
+      return React.createElement(Select, {
+        options: options,
+        onChange: onSelect,
+        // defaultValue: options[0]?.value,
+      });
+    };
+
+    const { unmount } = render(
+      React.createElement(AppSelector, {
+        onSelect: (value: string) => {
+          unmount();
+          resolve(value);
+        },
+      }),
+    );
+  });
 }
 
 async function main() {

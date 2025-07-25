@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")/.."
-npx ts-node src/web-config/index.ts
+npx tsx src/web-config/cli.tsx
