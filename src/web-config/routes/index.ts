@@ -3,6 +3,11 @@ import * as path from 'path';
 import apiRoutes from './api';
 import compilerRoutes from './compiler';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const router = express.Router();
 
 // API routes

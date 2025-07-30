@@ -3,6 +3,11 @@ import * as path from 'path';
 import cors from 'cors';
 import routes from './routes';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export class WebConfigServer {
   private app: express.Application;
   private port: number;
@@ -22,6 +27,8 @@ export class WebConfigServer {
     this.app.use(express.json());
 
     // Serve static files from public directory
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
     this.app.use(express.static(path.join(__dirname, 'public')));
   }
 
