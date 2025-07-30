@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")/.."
+npx tsx src/scripts/delete-empty-dirs.tsx "$@"
