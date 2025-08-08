@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export abstract class ConfigFile<T extends object> {
-  constructor(private readonly filePath: string) {}
+  constructor(protected readonly filePath: string) {}
 
   abstract getDefaultData(): T;
 
