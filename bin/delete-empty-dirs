@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
+# Update to latest version before running
+"$(dirname "$0")/../update" >/dev/null 2>&1
+
 cd "$(dirname "$0")/.."
 npx tsx src/scripts/delete-empty-dirs.tsx "$@"

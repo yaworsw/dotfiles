@@ -1,0 +1,135 @@
+#!/bin/bash
+
+# Update script for dotfiles repository
+# 
+# This script checks for and pulls the latest updates from the git repository.
+# It's designed to be called at the start of scripts in ./bin to ensure
+# we're always running the latest versions of the dotfiles scripts.
+#
+# Usage:
+#   ./update              # Check for updates silently (only output on errors)
+#   ./update --debug      # Show detailed output during update process
+#   ./update --help       # Show this help message
+
+# Parse command line arguments
+DEBUG=false
+HELP=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --debug)
+            DEBUG=true
+            shift
+            ;;
+        --help)
+            HELP=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
+# Show help if requested
+if [ "$HELP" = true ]; then
+    echo "Update script for dotfiles repository"
+    echo ""
+    echo "This script checks for and pulls the latest updates from the git repository."
+    echo "It's designed to be called at the start of scripts in ./bin to ensure"
+    echo "we're always running the latest versions of the dotfiles scripts."
+    echo ""
+    echo "Usage:"
+    echo "  ./update              # Check for updates silently (only output on errors)"
+    echo "  ./update --debug      # Show detailed output during update process"
+    echo "  ./update --help       # Show this help message"
+    echo ""
+    echo "The script will:"
+    echo "  - Check if updates are available"
+    echo "  - Pull latest changes if available"
+    echo "  - Handle local changes by stashing them"
+    echo "  - Automatically run 'npm install' after successful git pull"
+    echo "  - Restore stashed changes if any"
+    exit 0
+fi
+
+# Debug function
+debug() {
+    if [ "$DEBUG" = true ]; then
+        echo "$1"
+    fi
+}
+
+# Get the absolute path of the current directory
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Check if we're in a git repository
+if [ ! -d "$DOTFILES_DIR/.git" ]; then
+    echo "Error: Not a git repository. Cannot check for updates."
+    exit 1
+fi
+
+# Change to the dotfiles directory
+cd "$DOTFILES_DIR"
+
+debug "Checking for updates..."
+
+# Fetch the latest changes from remote
+git fetch origin >/dev/null 2>&1
+
+# Check if there are any updates available
+LOCAL_COMMIT=$(git rev-parse HEAD)
+REMOTE_COMMIT=$(git rev-parse origin/main 2>/dev/null || git rev-parse origin/master 2>/dev/null)
+
+if [ "$LOCAL_COMMIT" = "$REMOTE_COMMIT" ]; then
+    debug "✅ No updates available. Your dotfiles are up to date!"
+else
+    debug "🔄 Updates available! Pulling latest changes..."
+    
+    # Check if there are any local changes that would conflict
+    if [ -n "$(git status --porcelain)" ]; then
+        debug "⚠️  Warning: You have local changes that might conflict with the update."
+        debug "   Local changes:"
+        git status --short
+        debug ""
+        read -p "Do you want to stash your changes and continue? (y/N): " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            debug "Stashing local changes..."
+            git stash
+            STASHED=true
+        else
+            echo "Update cancelled. Please commit or stash your changes manually."
+            exit 1
+        fi
+    fi
+    
+    # Pull the latest changes
+    if git pull origin main 2>/dev/null || git pull origin master 2>/dev/null; then
+        debug "✅ Successfully updated dotfiles!"
+        
+        # Always run npm install after successful git pull
+        debug "📦 Running npm install to update dependencies..."
+        npm install >/dev/null 2>&1
+        debug "✅ Dependencies updated!"
+        
+        # Restore stashed changes if any
+        if [ "$STASHED" = true ]; then
+            debug "Restoring your local changes..."
+            if git stash pop; then
+                debug "✅ Local changes restored successfully!"
+            else
+                debug "⚠️  There were conflicts when restoring your changes."
+                debug "   You can resolve them manually with 'git status'"
+            fi
+        fi
+        
+        debug ""
+        debug "🎉 Update complete! Your dotfiles are now up to date."
+    else
+        echo "❌ Failed to pull updates. Please check your git configuration and try again."
+        exit 1
+    fi
+fi
